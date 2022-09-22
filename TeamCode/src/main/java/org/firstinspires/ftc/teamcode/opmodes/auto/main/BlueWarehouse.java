@@ -81,25 +81,7 @@ public class BlueWarehouse extends LinearOpMode {
         while(opModeIsActive()){
         }
     }
-    public void strafeUntilMarker(double distanceIn, int velocity, boolean isRunning){
-        int ticks = (int)(-distanceIn/(Math.PI*4)*515*1.1);
-        dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dt.setDrivetrainPositions((int)ticks, (int)-ticks,(int)-ticks, (int)ticks);
-        dt.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dt.setDrivetrainVelocity(velocity);
 
-        ElapsedTime runtime = new ElapsedTime();
-        boolean run = true;
-        runtime.reset();
-        while(!seesMarker()&&dt.fr.isBusy() && isRunning){
-            telemetry.addData("Sees Marker: ", seesMarker());
-            telemetry.addData("Distance: ", color.getDistance(DistanceUnit.INCH));
-            telemetry.update();
-        }
-        if(seesMarker()){
-            dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-    }
 
     //Returns true when it sees the marker
     public boolean seesMarker(){
