@@ -52,16 +52,9 @@ public class Robot extends OpMode{
 
   public DriveTrain dt = new DriveTrain();
   public Intake intake = new Intake();
-  public DcMotorEx lift;
   public BNO055IMU gyro;
-  public DcMotor spinner;
-  public DcMotor spinner2;
-  public Servo leftServo;
-  public Servo rightServo;
-  public Servo midServo;
-  public Servo rampServo;
-  public TouchSensor magLim;
-  public ColorSensor color;
+  public DcMotor angleAdjuster;
+
 
   public static ElapsedTime timer = new ElapsedTime();
 
@@ -82,16 +75,8 @@ public class Robot extends OpMode{
     dt.initMotors(motors);
     //fm.init(hardwareMap.get(Servo.class, "fmLeft"), hardwareMap.get(Servo.class, "fmRight"));
     gyro = hardwareMap.get(BNO055IMU.class, "imu");
-    intake.init(hardwareMap.get(DcMotor.class, "intake"));
-    lift = hardwareMap.get(DcMotorEx.class, "lift");
-    spinner = hardwareMap.get(DcMotor.class, "spinner");
-    spinner2 = hardwareMap.get(DcMotor.class, "spinner2");
-    leftServo = hardwareMap.get(Servo.class, "pushServo");
-    rightServo = hardwareMap.get(Servo.class,"platServo");
-    midServo = hardwareMap.get(Servo.class, "midServo");
-    rampServo = hardwareMap.get(Servo.class, "rampServo");
-    magLim = hardwareMap.get(TouchSensor.class, "magLim");
-    color = hardwareMap.get(ColorSensor.class,"color");
+    angleAdjuster = hardwareMap.get(DcMotor.class, "angleAdjuster");
+
 
   }
 
@@ -132,12 +117,7 @@ public class Robot extends OpMode{
 
 
 
-    telemetry.addLine("Lift: " + lift.getCurrentPosition());
-    telemetry.addLine("Left Servo: " + leftServo.getPosition());
-    telemetry.addLine("Right Servo: " + rightServo.getPosition());
-    telemetry.addLine("Middle Servo: " + midServo.getPosition());
-    telemetry.addLine("Ramp Servo: " + rampServo.getPosition());
-    telemetry.addLine("Limit switch: " + magLim.isPressed());
+
     telemetry.addLine("Gyro: " + dt.getGyroRotation(AngleUnit.RADIANS));
     telemetry.update();
 
