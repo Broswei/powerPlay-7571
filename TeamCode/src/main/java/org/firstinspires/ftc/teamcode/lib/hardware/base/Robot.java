@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.lib.hardware.manip.AngleAdjuster;
 import org.firstinspires.ftc.teamcode.lib.hardware.manip.Intake;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -53,7 +54,7 @@ public class Robot extends OpMode{
   public DriveTrain dt = new DriveTrain();
   public Intake intake = new Intake();
   public BNO055IMU gyro;
-  public DcMotor angleAdjuster;
+  public AngleAdjuster angleAdjuster = new AngleAdjuster();
 
 
   public static ElapsedTime timer = new ElapsedTime();
@@ -75,7 +76,7 @@ public class Robot extends OpMode{
     dt.initMotors(motors);
     //fm.init(hardwareMap.get(Servo.class, "fmLeft"), hardwareMap.get(Servo.class, "fmRight"));
     gyro = hardwareMap.get(BNO055IMU.class, "imu");
-    angleAdjuster = hardwareMap.get(DcMotor.class, "angleAdjuster");
+    angleAdjuster.init(hardwareMap.get(DcMotorEx.class, "angleAdjuster"));
 
 
   }
@@ -119,7 +120,7 @@ public class Robot extends OpMode{
 
 
     telemetry.addLine("Gyro: " + dt.getGyroRotation(AngleUnit.RADIANS));
-    telemetry.update();
+    //telemetry.update();
 
   }
 

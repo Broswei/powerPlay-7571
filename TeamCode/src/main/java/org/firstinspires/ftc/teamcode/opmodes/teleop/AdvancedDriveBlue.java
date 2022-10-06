@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.Robot;
+import org.firstinspires.ftc.teamcode.lib.hardware.manip.AngleAdjuster;
 
 @TeleOp (group = "DriveTest")
 public class AdvancedDriveBlue extends Robot{
@@ -18,6 +19,8 @@ private boolean yButton2Toggle=false;
         boolean isIntaking = false;
         int liftZero = 0;
         double gyroOffset = 0;
+    boolean pressed=false;
+    int tracker = 0;
 
 private ElapsedTime timer=new ElapsedTime();
 
@@ -60,7 +63,23 @@ private ElapsedTime timer=new ElapsedTime();
             dt.fieldOrientedControl(gamepad1, isSlow, isFast, gyroOffset);
         }
 
+        if (gamepad2.left_bumper && !pressed){
+            pressed = true;
+            tracker += 1;
+            tracker %= 5;
+            angleAdjuster.angleAdjuster.setTargetPosition(AngleAdjuster.angles[tracker]);
+            angleAdjuster.angleAdjuster.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            angleAdjuster.angleAdjuster.setVelocity(500);
+        } else if(!gamepad2.left_bumper){
+            pressed = false;
+        }
 
+
+
+
+
+
+        telemetry.addData("Angle Position:", angleAdjuster.angleAdjuster.getCurrentPosition());
         telemetry.update();
     }
 }
