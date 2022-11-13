@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.Robot;
-import org.firstinspires.ftc.teamcode.lib.hardware.manip.Lift;
 
 @TeleOp (group = "DriveTest")
-public class AdvancedDriveBlue extends Robot{
+public class Solo extends Robot{
 
 private boolean yButton2Toggle=false;
 
@@ -22,7 +19,6 @@ private boolean yButton2Toggle=false;
         double gyroOffset = 0;
         boolean pressed=false;
         int tracker = 0;
-        double[] positions = new double[]{-4.5, -3, -1.5};
 
 private ElapsedTime timer=new ElapsedTime();
 
@@ -43,11 +39,9 @@ private ElapsedTime timer=new ElapsedTime();
         super.loop();
 
         //Sets if we are intaking or not
-        isIntaking = gamepad2.right_trigger>.1;
+        isSlow = gamepad1.left_trigger>.01;
 
-        isSlow = gamepad1.left_trigger>.01 || gamepad1.right_trigger>.01;
-
-        if(gamepad1.y){
+        if(gamepad1.right_bumper){
             gyroOffset = dt.getGyroRotation(AngleUnit.RADIANS);
         }
         if(gamepad1.a){
@@ -64,31 +58,27 @@ private ElapsedTime timer=new ElapsedTime();
             dt.fieldOrientedControl(gamepad1, isSlow, isFast, gyroOffset);
         }
 
-        if (gamepad2.y){
-            lift.pullDistance(34,1250);
+        if (gamepad1.y){
+            lift.pullDistance(34,1000);
         }
-        else if (gamepad2.x){
-            lift.pullDistance(24, 1250);
+        else if (gamepad1.x){
+            lift.pullDistance(24, 1000);
         }
-        else if (gamepad2.b){
-            lift.pullDistance(16,1250);
+        else if (gamepad1.b){
+            lift.pullDistance(16
+                    ,1000);
         }
         else{
-            lift.pullDistance(0, 1250);
+            lift.pullDistance(0, 1000);
         }
 
-        if (gamepad2.right_trigger > 0.01){
+        if (gamepad1.right_trigger > 0.01){
             claw.setPosition(1);
         }
         else{
             claw.setPosition(0.5);
         }
 
-        if (gamepad1.b){
-            tracker +=1;
-            tracker %= 3;
-            lift.pullDistance(positions[tracker],500);
-        }
 
 
         telemetry.addLine("Servo Position: " + claw.getPosition());

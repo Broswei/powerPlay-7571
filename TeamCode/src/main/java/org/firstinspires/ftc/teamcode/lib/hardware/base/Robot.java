@@ -53,8 +53,9 @@ public class Robot extends OpMode{
 
   public DriveTrain dt = new DriveTrain();
   public Intake intake = new Intake();
+  public Lift lift = new Lift();
   public BNO055IMU gyro;
-  public DcMotorEx lift;
+  public Servo claw;
 
 
   public static ElapsedTime timer = new ElapsedTime();
@@ -76,8 +77,8 @@ public class Robot extends OpMode{
     dt.initMotors(motors);
     //fm.init(hardwareMap.get(Servo.class, "fmLeft"), hardwareMap.get(Servo.class, "fmRight"));
     gyro = hardwareMap.get(BNO055IMU.class, "imu");
-    lift = hardwareMap.get(DcMotorEx.class, "lift");
-
+    lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
+    claw = hardwareMap.get(Servo.class, "claw");
 
   }
 

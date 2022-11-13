@@ -54,7 +54,7 @@ public class DriveTrain{
   public static double ySpeed = 0;
   public static double turnSpeed = 0;
 
-  int ticksPerRotation = 515;
+  double ticksPerRotation = 384.5;
 
   //last update time
   private long lastUpdateTime = 0;
@@ -151,9 +151,9 @@ public class DriveTrain{
         movement_y = Range.clip(gamepad.left_stick_y, -1, 1);
         movement_turn = Range.clip(-gamepad.right_stick_x, -1, 1);
       } else{
-        movement_x = Range.clip(-gamepad.left_stick_x, -.5, .5);
-        movement_y = Range.clip(gamepad.left_stick_y, -.5, .5);
-        movement_turn = Range.clip(-gamepad.right_stick_x, -.5, .5);
+        movement_x = Range.clip(-gamepad.left_stick_x, -.4, .4);
+        movement_y = Range.clip(gamepad.left_stick_y, -.4, .4);
+        movement_turn = Range.clip(-gamepad.right_stick_x, -.4, .4);
       }
 
       double temp = movement_x*Math.cos(getGyroRotation(AngleUnit.RADIANS)-gyroOffset)+movement_y*Math.sin(getGyroRotation(AngleUnit.RADIANS)-gyroOffset);

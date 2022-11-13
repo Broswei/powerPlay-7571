@@ -12,8 +12,12 @@ public class Lift extends Subsystem {
 
     public static int[] angles = new int[]{0, 72, 120, 160, 180};
 
-
     public Lift(){
+
+    }
+
+
+    public void init(DcMotorEx lift){
 
         this.lift = lift;
 
@@ -25,8 +29,12 @@ public class Lift extends Subsystem {
 
     public void pullDistance(double distanceIn, int velocity){
 
-        
-        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int slideTicksPerRotation = 538;
+        double ticks;
+
+        ticks = (-distanceIn/(4.4)*slideTicksPerRotation);
+        lift.setTargetPosition((int) ticks);
+        lift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         lift.setVelocity(velocity);
 
     }
