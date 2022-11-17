@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.Robot;
-import org.firstinspires.ftc.teamcode.lib.hardware.manip.Lift;
 
 @TeleOp (group = "DriveTest")
-public class AdvancedDriveBlue extends Robot{
+public class AdvancedDrive extends Robot{
 
 private boolean yButton2Toggle=false;
 

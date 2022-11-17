@@ -73,10 +73,10 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad1.right_trigger > 0.01){
-            claw.setPosition(1);
+            claw.setPosition(0);
         }
         else{
-            claw.setPosition(0.5);
+            claw.setPosition(0.4);
         }
 
 
