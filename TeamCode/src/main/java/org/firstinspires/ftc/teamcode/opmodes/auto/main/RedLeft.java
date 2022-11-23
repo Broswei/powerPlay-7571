@@ -57,44 +57,6 @@ public class RedLeft extends LinearOpMode {
         waitForStart();
 
         //Auto Commands
-        dt.strafeDistance(-65,1000,opModeIsActive());
-        lift.pullDistance(34,1250);
-        while(lift.lift.isBusy());
-        dt.driveDistance(-3.5,500,opModeIsActive());
-        claw.setPosition(0.5);
-        sleep(1000);
-        dt.driveDistance(3.5,500,opModeIsActive());
-        lift.pullDistance(4.75,750);
-        turnDegrees(178.5,750);
-        dt.strafeDistance(-12,750,opModeIsActive());
-        dt.driveDistance(-24,750,opModeIsActive());
-        fang();
-        sleep(1000);
-        lift.pullDistance(10,500);
-        while(lift.lift.isBusy()){
-            dt.driveDistance(24,1000,opModeIsActive());
-        }
-        dt.strafeDistance(-12, 750,opModeIsActive());
-        turnDegrees(-178.5,750);
-        dt.driveDistance(-3.5,750, opModeIsActive());
-        claw.setPosition(0.5);
-        sleep(1000);
-        dt.driveDistance(3.5,750,opModeIsActive());
-        turnDegrees(88.5, 750);
-        int parkingSpace = (int)(Math.random()*3+1);
-        dt.driveDistance(18,750,opModeIsActive());
-        if (parkingSpace == 1){
-            dt.strafeDistance(24,750,opModeIsActive());
-        }
-        else if (parkingSpace == 3){
-            dt.strafeDistance(-24,750,opModeIsActive());
-        }
-
-
-
-
-
-
 
         while(opModeIsActive()){
         }
@@ -147,15 +109,15 @@ public class RedLeft extends LinearOpMode {
 
     public void score(int level){
         if (level == 1){
-            lift.pullDistance(14,1000);
+            lift.targetDistance(14,1000);
 
         }
         else if (level == 2){
-            lift.pullDistance(22, 750);
+            lift.targetDistance(22, 750);
 
         }
         else{
-            lift.pullDistance(32, 1250);
+            lift.targetDistance(32, 1250);
 
         }
     }

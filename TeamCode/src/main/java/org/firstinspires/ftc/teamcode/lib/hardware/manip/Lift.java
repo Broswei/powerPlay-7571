@@ -27,7 +27,7 @@ public class Lift extends Subsystem {
 
     }
 
-    public void pullDistance(double distanceIn, int velocity){
+    public void targetDistance(double distanceIn, int velocity){
 
         int slideTicksPerRotation = 538;
         double ticks;

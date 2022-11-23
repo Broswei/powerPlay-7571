@@ -70,8 +70,6 @@ public class DriveTrain{
 
   public DriveTrain(){
 
-    //initMotors();
-
   }
 
   /**
@@ -88,11 +86,6 @@ public class DriveTrain{
     fr = motors[1];
     bl = motors[2];
     br = motors[3];
-
-    /*
-    fl.setDirection(DcMotorSimple.Direction.REVERSE);
-    bl.setDirection(DcMotorSimple.Direction.REVERSE);
-    */
 
     fr.setDirection(DcMotorSimple.Direction.REVERSE);
     br.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -143,9 +136,9 @@ public class DriveTrain{
 
     public void fieldOrientedControl(Gamepad gamepad, boolean isSlow, boolean isFast, double gyroOffset){
       if(isSlow) {
-        movement_x = Range.clip(-gamepad.left_stick_x, -0.3, 0.3);
-        movement_y = Range.clip(gamepad.left_stick_y, -0.3, 0.3);
-        movement_turn = Range.clip(-gamepad.right_stick_x, -0.3, 0.3);
+        movement_x = Range.clip(-gamepad.left_stick_x, -0.2, 0.2);
+        movement_y = Range.clip(gamepad.left_stick_y, -0.2, 0.2);
+        movement_turn = Range.clip(-gamepad.right_stick_x, -0.2, 0.2 );
       } else if(isFast){
         movement_x = Range.clip(-gamepad.left_stick_x, -1, 1);
         movement_y = Range.clip(gamepad.left_stick_y, -1, 1);
@@ -260,10 +253,6 @@ public class DriveTrain{
     motorPowers[2] =  movement_y + movement_turn - movement_x;
     motorPowers[3] =  movement_y - movement_turn + movement_x;
 
-    /*for(int i = 0; i < motorPowers.length; i++){
-      motorPowers[i] = (Math.abs(motorPowers[i]) < 0.075) ? 0:motorPowers[i];
-    }*/
-
     if(isAuto) {
 
         fl.setPower(Range.clip(motorPowers[0], -maxMotorPowerAuto, maxMotorPowerAuto));
@@ -276,27 +265,6 @@ public class DriveTrain{
         bl.setPower(Range.clip(motorPowers[2], -1, 1) * maxMotorPowerManual);
         br.setPower(Range.clip(motorPowers[3], -1, 1) * maxMotorPowerManual);
     }
-
-  }
-
-  public void setSlowmode(double maxPower){
-      maxMotorPowerManual = maxPower;
-  }
-
-  public void applyMovement(double lx, double ly, double rx){
-
-    double flP, frP, brP, blP;
-
-    flP = ly + rx + lx;
-    frP = ly - rx - lx;
-    blP = ly + rx - lx;
-    brP = ly - rx + lx;
-
-    fl.setPower(Range.clip(flP, -1, 1));
-    fr.setPower(Range.clip(frP, -1, 1));
-    bl.setPower(Range.clip(blP, -1, 1));
-    br.setPower(Range.clip(brP, -1, 1));
-
 
   }
 
@@ -327,8 +295,6 @@ public class DriveTrain{
     bl.setPower(lp);
   }
 
-
-
   public void setAngleTarget(double angle){
       aTarget = angle;
   }
@@ -339,12 +305,7 @@ public class DriveTrain{
    * @return rotation in unit as a double
    */
   public double getGyroRotation(AngleUnit unit) {
-    //return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, unit).firstAngle;
     return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, unit).firstAngle;
-  }
-
-  public void setMaxMotorPowerAuto(double power){
-      maxMotorPowerAuto = power;
   }
 
   public String getTargetString(){

@@ -62,29 +62,23 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad2.y){
-            lift.pullDistance(34,1250);
+            lift.targetDistance(34,1250);
         }
         else if (gamepad2.x){
-            lift.pullDistance(24, 1250);
+            lift.targetDistance(24, 1250);
         }
         else if (gamepad2.b){
-            lift.pullDistance(16,1250);
+            lift.targetDistance(16,1250);
         }
         else{
-            lift.pullDistance(0, 1250);
+            lift.targetDistance(0, 1250);
         }
 
         if (gamepad2.right_trigger > 0.01){
-            claw.setPosition(1);
+            claw.setPosition(0);
         }
         else{
-            claw.setPosition(0.5);
-        }
-
-        if (gamepad1.b){
-            tracker +=1;
-            tracker %= 3;
-            lift.pullDistance(positions[tracker],500);
+            claw.setPosition(0.4);
         }
 
 

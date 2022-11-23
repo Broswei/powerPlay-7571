@@ -59,17 +59,16 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad1.y){
-            lift.pullDistance(34,1000);
+            lift.targetDistance(34,1000);
         }
         else if (gamepad1.x){
-            lift.pullDistance(24, 1000);
+            lift.targetDistance(24, 1000);
         }
         else if (gamepad1.b){
-            lift.pullDistance(16
-                    ,1000);
+            lift.targetDistance(16,1000);
         }
         else{
-            lift.pullDistance(0, 1000);
+            lift.targetDistance(0, 1000);
         }
 
         if (gamepad1.right_trigger > 0.01){

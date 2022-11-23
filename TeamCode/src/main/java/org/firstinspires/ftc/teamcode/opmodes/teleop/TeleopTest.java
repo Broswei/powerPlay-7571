@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.Robot;
 
 @TeleOp (group = "DriveTest")
-public class DriveTest extends Robot{
+public class TeleopTest extends Robot{
 
 
         //boolean test=true;
