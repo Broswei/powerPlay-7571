@@ -15,16 +15,13 @@ import java.text.DecimalFormat;
 
 import static org.firstinspires.ftc.teamcode.lib.hardware.base.DriveTrain.PIDx;
 import static org.firstinspires.ftc.teamcode.lib.hardware.base.DriveTrain.PIDy;
-import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.RobotStates;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aTarget;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aTolerance;
-import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.auto;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.auxGp;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.currentXTicks;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.currentYTicks;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.mTolerance;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.mainGp;
-import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.roboState;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.worldAngle_rad;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.worldXPosition;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.worldYPosition;
