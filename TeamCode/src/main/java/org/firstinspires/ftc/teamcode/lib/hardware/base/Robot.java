@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -33,6 +34,7 @@ public class Robot extends OpMode {
   public Lift lift = new Lift();
   public BNO055IMU gyro;
   public Servo claw;
+  public HardwareDevice Webcam1;
 
 
   public static ElapsedTime timer = new ElapsedTime();
@@ -52,6 +54,7 @@ public class Robot extends OpMode {
     gyro = hardwareMap.get(BNO055IMU.class, "imu");
     lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
     claw = hardwareMap.get(Servo.class, "claw");
+    Webcam1 = hardwareMap.get(HardwareDevice.class, "Webcam1");
 
   }
 

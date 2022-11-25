@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto.main;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -50,9 +48,10 @@ public class RedLeft extends LinearOpMode {
         claw = hardwareMap.get(Servo.class, "claw");
 
 
+
         dt.initMotors(motors);
         dt.initGyro(gyro);
-        claw.setPosition(1);
+        claw.setPosition(0);
 
         waitForStart();
 
