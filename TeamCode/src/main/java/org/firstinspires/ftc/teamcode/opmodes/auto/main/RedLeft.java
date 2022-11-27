@@ -1,3 +1,32 @@
+/* Copyright (c) 2019 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.firstinspires.ftc.teamcode.opmodes.auto.main;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -5,63 +34,123 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.DriveTrain;
 import org.firstinspires.ftc.teamcode.lib.hardware.manip.Lift;
 
+import java.util.List;
 
-@Autonomous(group="Main")
+@Autonomous(group = "main")
+
 public class RedLeft extends LinearOpMode {
 
-    /* Declare OpMode members. */
+
+    private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";
+
+    private static final String[] LABELS = {
+            "1 Yellow",
+            "2 Blue",
+            "3 Green"
+    };
+
+    private static final String VUFORIA_KEY =
+            "AeSrvI3/////AAABmUSQfCByrUcZjWTMUHPjMY1IIUpYyRMjVhj2brmEUl+sUo+t82OGML/Oq35Z7QZ8BdgUssPKUr409P5eQ/JF/jCY6mmqkPcEBBZqcoSaIR0XbIVSZGgsI7pgrDm9XvOGmbnjoFYIop/KIIrHeRt99uj2qC0P0AmWbwABM6Ma09jitjXGbNdAdnn2KJRGWPYvAjutSJ0e9UpgZBl30uLyhIp9VNolBAL8DsuBZs9FDmrY6jf7CftowUxGbDk6jfymEqoqPOqNH0L/AbCHlsr2UJmTSj8mZEqPabCnbULMcamnTYwR7J14bjmGGCrjQ5JifN/H33RwUFAhCYhl7fmBiqZKvAu3jCdvGmVR/QUYpPz3";
+
+
+    private VuforiaLocalizer vuforia;
+    private TFObjectDetector tfod;
+
     private DriveTrain dt = new DriveTrain();
-    private ElapsedTime     runtime = new ElapsedTime();
-    private HardwareDevice webcam_1;
+    private ElapsedTime runtime = new ElapsedTime();
+    private WebcamName Webcam1;
     private DcMotorEx[] motors;
     private BNO055IMU gyro;
     private int degreeOffset = 2;
     public Lift lift = new Lift();
     public Servo claw;
-
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_DM.tflite";
-    private static final String[] LABELS = {
-            "Duck",
-            "Marker"
-    };
+    public int park = 2;
 
     @Override
     public void runOpMode() {
 
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
+        initVuforia();
+        initTfod();
+
+        if (tfod != null) {
+            tfod.activate();
+            tfod.setZoom(2.0, 16.0/9.0);
+        }
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
         gyro = hardwareMap.get(BNO055IMU.class, "imu");
         lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
         claw = hardwareMap.get(Servo.class, "claw");
+        Webcam1 = hardwareMap.get(WebcamName.class, "Webcam1");
 
 
 
         dt.initMotors(motors);
         dt.initGyro(gyro);
-        claw.setPosition(0);
-
+        claw.setPosition(0.1);
         waitForStart();
 
         //Auto Commands
-
-        while(opModeIsActive()){
+        dt.driveDistance(-6,500,opModeIsActive());
+        sleep(3000);
+        if(tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
+                for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                    if (recognition.getLabel() == "1 Yellow") {
+                        park--;
+                    } else if (recognition.getLabel() == "3 Green") {
+                        park++;
+                    }
+                    telemetry.addData("Parking Space", park);
+                }
+                telemetry.update();
+            }
         }
+        dt.strafeDistance(24,500,opModeIsActive());
+        dt.driveDistance(-20,1000,opModeIsActive());
+        dt.strafeDistance(-15,500,opModeIsActive());
+        score(3);
+        turnDegrees(87,750);
+        while (opModeIsActive()){}
     }
 
-    //Turn by degrees
+    //
+
+    private void initVuforia() {
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam1");
+
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+    }
+
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.7f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 300;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+    }
+
     public void turnDegrees(double turnDegrees,int velocity){
         dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         double offset;
@@ -102,27 +191,36 @@ public class RedLeft extends LinearOpMode {
 
     }
 
-    public void fang(){
-        claw.setPosition(1);
+    public void grab(int level){
+        if (level == 5){
+            lift.targetDistance(4.75, 2000);
+        }
+        else if (level == 4){
+            lift.targetDistance(3.8, 2000);
+        }
+        else if (level == 3){
+            lift.targetDistance(3, 2000);
+        }
+        while(lift.lift.isBusy()){}
+        dt.driveDistance(2.5,500,opModeIsActive());
+        claw.setPosition(0.1);
+        lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
     }
 
     public void score(int level){
         if (level == 1){
-            lift.targetDistance(14,1000);
-
+            lift.targetDistance(14,2000);
         }
         else if (level == 2){
-            lift.targetDistance(22, 750);
-
+            lift.targetDistance(22, 2000);
         }
         else{
-            lift.targetDistance(32, 1250);
-
+            lift.targetDistance(32, 2000);
         }
+        while(lift.lift.isBusy()){}
+        dt.driveDistance(1.5,500,opModeIsActive());
+        claw.setPosition(0.4);
+        dt.driveDistance(-1.5,500,opModeIsActive());
+        lift.targetDistance(0,2000);
     }
-
-
-
-
-
 }

@@ -62,20 +62,20 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad2.y){
-            lift.targetDistance(34,1500);
+            lift.targetDistance(34,2000);
         }
         else if (gamepad2.x){
-            lift.targetDistance(24, 1500);
+            lift.targetDistance(24, 2000);
         }
         else if (gamepad2.b){
-            lift.targetDistance(16,1500);
+            lift.targetDistance(16,2000);
         }
         else{
-            lift.targetDistance(0, 1500);
+            lift.targetDistance(0, 2000);
         }
 
         if (gamepad2.right_trigger > 0.01){
-            claw.setPosition(0);
+            claw.setPosition(0.1);
         }
         else{
             claw.setPosition(0.4);
