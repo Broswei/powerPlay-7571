@@ -86,7 +86,7 @@ public class RedLeft extends LinearOpMode {
 
         if (tfod != null) {
             tfod.activate();
-            tfod.setZoom(2.0, 16.0/9.0);
+            tfod.setZoom(1.5, 16.0/9.0);
         }
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
@@ -103,8 +103,7 @@ public class RedLeft extends LinearOpMode {
         waitForStart();
 
         //Auto Commands
-        dt.driveDistance(-6,500,opModeIsActive());
-        sleep(3000);
+        sleep(1000);
         if(tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
@@ -121,14 +120,26 @@ public class RedLeft extends LinearOpMode {
             }
         }
         dt.strafeDistance(24,500,opModeIsActive());
-        dt.driveDistance(-20,1000,opModeIsActive());
-        dt.strafeDistance(-15,500,opModeIsActive());
+        dt.driveDistance(-51,1000,opModeIsActive());
+        dt.strafeDistance(-13.75,500,opModeIsActive());
         score(3);
-        turnDegrees(87,750);
+        turnDegrees(88,500);
+        dt.strafeDistance(2,500,opModeIsActive());
+        dt.driveDistance(-36,1000,opModeIsActive());
+        grab(5);
+        dt.driveDistance(36,1000,opModeIsActive());
+        turnDegrees(-88,500);
+        score(5);
+        turnDegrees(178,750);
+        if (park == 1){
+            dt.strafeDistance(24, 1000,opModeIsActive());
+        }
+        else if(park == 3){
+            dt.strafeDistance(-24,1000,opModeIsActive());
+        }
         while (opModeIsActive()){}
     }
 
-    //
 
     private void initVuforia() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -202,9 +213,9 @@ public class RedLeft extends LinearOpMode {
             lift.targetDistance(3, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(2.5,500,opModeIsActive());
         claw.setPosition(0.1);
         lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
+        dt.driveDistance(2.5,500,opModeIsActive());
     }
 
     public void score(int level){
@@ -218,9 +229,9 @@ public class RedLeft extends LinearOpMode {
             lift.targetDistance(32, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(1.5,500,opModeIsActive());
+        dt.driveDistance(-3.5,500,opModeIsActive());
         claw.setPosition(0.4);
-        dt.driveDistance(-1.5,500,opModeIsActive());
+        dt.driveDistance(3.5,500,opModeIsActive());
         lift.targetDistance(0,2000);
     }
 }

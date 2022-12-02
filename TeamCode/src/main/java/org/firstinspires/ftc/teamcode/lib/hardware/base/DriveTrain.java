@@ -134,9 +134,9 @@ public class DriveTrain{
 
     public void fieldOrientedControl(Gamepad gamepad, boolean isSlow, boolean isFast, double gyroOffset){
       if(isSlow) {
-        movement_x = Range.clip(-gamepad.left_stick_x, -0.2, 0.2);
-        movement_y = Range.clip(gamepad.left_stick_y, -0.2, 0.2);
-        movement_turn = Range.clip(-gamepad.right_stick_x, -0.2, 0.2 );
+        movement_x = Range.clip(-gamepad.left_stick_x, -.2, .2);
+        movement_y = Range.clip(gamepad.left_stick_y, -.2, .2);
+        movement_turn = Range.clip(-gamepad.right_stick_x, -.2, .2);
       } else if(isFast){
         movement_x = Range.clip(-gamepad.left_stick_x, -1, 1);
         movement_y = Range.clip(gamepad.left_stick_y, -1, 1);

@@ -51,7 +51,7 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         //Strafe drive, slows down when intaking
-        if(gamepad1.left_trigger>.1){
+        if(gamepad1.dpad_up){
             dt.manualControl(gamepad1,isSlow);
         }
         else {
@@ -59,16 +59,16 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad1.y){
-            lift.targetDistance(34,1000);
+            lift.targetDistance(34,2000);
         }
         else if (gamepad1.x){
-            lift.targetDistance(24, 1000);
+            lift.targetDistance(24, 2000);
         }
         else if (gamepad1.b){
-            lift.targetDistance(16,1000);
+            lift.targetDistance(16,2000);
         }
         else{
-            lift.targetDistance(0, 1000);
+            lift.targetDistance(0, 2000);
         }
 
         if (gamepad1.right_trigger > 0.01){

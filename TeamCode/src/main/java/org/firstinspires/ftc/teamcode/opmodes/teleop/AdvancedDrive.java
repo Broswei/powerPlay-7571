@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -39,10 +40,7 @@ private ElapsedTime timer=new ElapsedTime();
     public void loop(){
         super.loop();
 
-        //Sets if we are intaking or not
-        isIntaking = gamepad2.right_trigger>.1;
-
-        isSlow = gamepad1.left_trigger>.01 || gamepad1.right_trigger>.01;
+        isSlow = gamepad1.right_trigger>.01;
 
         if(gamepad1.y){
             gyroOffset = dt.getGyroRotation(AngleUnit.RADIANS);
@@ -75,12 +73,30 @@ private ElapsedTime timer=new ElapsedTime();
         }
 
         if (gamepad2.right_trigger > 0.01){
-            claw.setPosition(0.1);
+            claw.setPosition(0);
         }
         else{
             claw.setPosition(0.4);
         }
 
+        if (gamepad2.dpad_down){
+            lift.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            lift.lift.setVelocity(-1000);
+        }
+
+        if(gamepad2.dpad_up){
+            lift.targetDistance(4.75,1000);
+        }
+        else if (gamepad2.dpad_left){
+            lift.targetDistance(4, 1000);
+        }
+        else if(gamepad2.dpad_right){
+            lift.targetDistance(3.25,1000);
+        }
+
+        if (gamepad2.a){
+            lift.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
 
         telemetry.addLine("Servo Position: " + claw.getPosition());
         telemetry.addLine("Slides Position: "+  lift.lift.getCurrentPosition());
