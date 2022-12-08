@@ -44,13 +44,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.DriveTrain;
-import org.firstinspires.ftc.teamcode.lib.hardware.manip.Lift;
 
 import java.util.List;
 
 @Autonomous(group = "main")
 
-public class RedRight extends LinearOpMode {
+public class ParkRight extends LinearOpMode {
 
 
     private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";
@@ -74,7 +73,7 @@ public class RedRight extends LinearOpMode {
     private DcMotorEx[] motors;
     private BNO055IMU gyro;
     private int degreeOffset = 2;
-    public Lift lift = new Lift();
+    //public Lift lift = new Lift();
     public Servo claw;
     public int park = 2;
 
@@ -91,7 +90,7 @@ public class RedRight extends LinearOpMode {
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
         gyro = hardwareMap.get(BNO055IMU.class, "imu");
-        lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
+        //lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
         claw = hardwareMap.get(Servo.class, "claw");
         Webcam1 = hardwareMap.get(WebcamName.class, "Webcam1");
 
@@ -119,26 +118,15 @@ public class RedRight extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(-24,500,opModeIsActive());
+        dt.strafeDistance(-24,1000,opModeIsActive());
         dt.driveDistance(-51,1000,opModeIsActive());
-        dt.strafeDistance(12,500,opModeIsActive());
-        score(3);
-        turnDegrees(-88,500);
-        dt.driveDistance(-2,500,opModeIsActive());
-        dt.strafeDistance(-2,500,opModeIsActive());
-        dt.driveDistance(-28,1000,opModeIsActive());
-        grab(5);
-        dt.driveDistance(32, 1000, opModeIsActive());
-        turnDegrees(-88,500);
-        score(5);
-        turnDegrees(180,750);
-        dt.driveDistance(4,500,opModeIsActive());
-        if (park == 1){
-            dt.strafeDistance(-36, 1000,opModeIsActive());
+        if (park == 2){
+            dt.strafeDistance(24, 1000, opModeIsActive());
         }
-        else if(park == 3){
-            dt.strafeDistance(36,1000,opModeIsActive());
+        if (park == 3){
+            dt.strafeDistance(48, 1000,opModeIsActive());
         }
+        turnDegrees(180,500);
         while (opModeIsActive()){}
     }
 
@@ -154,7 +142,7 @@ public class RedRight extends LinearOpMode {
 
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.7f;
         tfodParameters.isModelTensorFlow2 = true;
@@ -202,38 +190,5 @@ public class RedRight extends LinearOpMode {
         }
         dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-    }
-
-    public void grab(int level){
-        if (level == 5){
-            lift.targetDistance(4.75, 2000);
-        }
-        else if (level == 4){
-            lift.targetDistance(3.8, 2000);
-        }
-        else if (level == 3){
-            lift.targetDistance(3, 2000);
-        }
-        while(lift.lift.isBusy()){}
-        claw.setPosition(0.1);
-        lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
-        dt.driveDistance(2.5,500,opModeIsActive());
-    }
-
-    public void score(int level){
-        if (level == 1){
-            lift.targetDistance(14,2000);
-        }
-        else if (level == 2){
-            lift.targetDistance(22, 2000);
-        }
-        else{
-            lift.targetDistance(32, 2000);
-        }
-        while(lift.lift.isBusy()){}
-        dt.driveDistance(-3.5,500,opModeIsActive());
-        claw.setPosition(0.4);
-        dt.driveDistance(3.5,500,opModeIsActive());
-        lift.targetDistance(0,2000);
     }
 }

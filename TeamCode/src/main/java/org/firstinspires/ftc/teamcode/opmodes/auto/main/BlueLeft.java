@@ -50,7 +50,7 @@ import java.util.List;
 
 @Autonomous(group = "main")
 
-public class RedRight extends LinearOpMode {
+public class BlueLeft extends LinearOpMode {
 
 
     private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";
@@ -119,13 +119,13 @@ public class RedRight extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(-24,500,opModeIsActive());
+        dt.strafeDistance(24,500,opModeIsActive());
         dt.driveDistance(-51,1000,opModeIsActive());
-        dt.strafeDistance(12,500,opModeIsActive());
+        dt.strafeDistance(-12,500,opModeIsActive());
         score(3);
-        turnDegrees(-88,500);
+        turnDegrees(88,500);
         dt.driveDistance(-2,500,opModeIsActive());
-        dt.strafeDistance(-2,500,opModeIsActive());
+        dt.strafeDistance(2,500,opModeIsActive());
         dt.driveDistance(-28,1000,opModeIsActive());
         grab(5);
         dt.driveDistance(32, 1000, opModeIsActive());
@@ -134,10 +134,10 @@ public class RedRight extends LinearOpMode {
         turnDegrees(180,750);
         dt.driveDistance(4,500,opModeIsActive());
         if (park == 1){
-            dt.strafeDistance(-36, 1000,opModeIsActive());
+            dt.strafeDistance(36, 1000,opModeIsActive());
         }
         else if(park == 3){
-            dt.strafeDistance(36,1000,opModeIsActive());
+            dt.strafeDistance(-36,1000,opModeIsActive());
         }
         while (opModeIsActive()){}
     }
@@ -154,7 +154,7 @@ public class RedRight extends LinearOpMode {
 
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.7f;
         tfodParameters.isModelTensorFlow2 = true;
@@ -206,34 +206,47 @@ public class RedRight extends LinearOpMode {
 
     public void grab(int level){
         if (level == 5){
-            lift.targetDistance(4.75, 2000);
+            lift.targetDistance(6, 2000);
         }
         else if (level == 4){
-            lift.targetDistance(3.8, 2000);
+            lift.targetDistance(4.5, 2000);
         }
         else if (level == 3){
             lift.targetDistance(3, 2000);
         }
         while(lift.lift.isBusy()){}
         claw.setPosition(0.1);
-        lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
-        dt.driveDistance(2.5,500,opModeIsActive());
+        sleep(1000);
+        if (level == 5){
+            lift.targetDistance(12, 2000);
+        }
+        else if (level == 4){
+            lift.targetDistance(10.5, 2000);
+        }
+        else if (level == 3){
+            lift.targetDistance(9, 2000);
+        }
+        else{
+            lift.targetDistance(6,2000);
+        }
+        while(lift.lift.isBusy()){}
     }
 
     public void score(int level){
         if (level == 1){
-            lift.targetDistance(14,2000);
+            lift.targetDistance(16,2000);
         }
         else if (level == 2){
-            lift.targetDistance(22, 2000);
+            lift.targetDistance(24, 2000);
         }
         else{
-            lift.targetDistance(32, 2000);
+            lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-3.5,500,opModeIsActive());
+        dt.driveDistance(-2.75,500,opModeIsActive());
+        sleep(500);
         claw.setPosition(0.4);
-        dt.driveDistance(3.5,500,opModeIsActive());
-        lift.targetDistance(0,2000);
+        dt.driveDistance(2.75,500,opModeIsActive());
+        lift.lift.setTargetPosition(0);
     }
 }

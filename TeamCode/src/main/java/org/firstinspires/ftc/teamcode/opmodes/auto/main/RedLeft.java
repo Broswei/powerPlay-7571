@@ -121,21 +121,23 @@ public class RedLeft extends LinearOpMode {
         }
         dt.strafeDistance(24,500,opModeIsActive());
         dt.driveDistance(-51,1000,opModeIsActive());
-        dt.strafeDistance(-13.75,500,opModeIsActive());
+        dt.strafeDistance(-12,500,opModeIsActive());
         score(3);
         turnDegrees(88,500);
+        dt.driveDistance(-2,500,opModeIsActive());
         dt.strafeDistance(2,500,opModeIsActive());
-        dt.driveDistance(-36,1000,opModeIsActive());
+        dt.driveDistance(-28,1000,opModeIsActive());
         grab(5);
-        dt.driveDistance(36,1000,opModeIsActive());
+        dt.driveDistance(32, 1000, opModeIsActive());
         turnDegrees(-88,500);
         score(5);
-        turnDegrees(178,750);
+        turnDegrees(180,750);
+        dt.driveDistance(4,500,opModeIsActive());
         if (park == 1){
-            dt.strafeDistance(24, 1000,opModeIsActive());
+            dt.strafeDistance(36, 1000,opModeIsActive());
         }
         else if(park == 3){
-            dt.strafeDistance(-24,1000,opModeIsActive());
+            dt.strafeDistance(-36,1000,opModeIsActive());
         }
         while (opModeIsActive()){}
     }
@@ -174,7 +176,7 @@ public class RedLeft extends LinearOpMode {
         if(correctedDegrees>180){
             correctedDegrees-=360;
         }
-        if(correctedDegrees>0){
+        if(turnDegrees>0){
             dt.setDrivetrainPositions(-predictedTicks,predictedTicks,-predictedTicks,predictedTicks);
             dt.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
             dt.setDrivetrainVelocity(velocity);
@@ -185,7 +187,7 @@ public class RedLeft extends LinearOpMode {
                 telemetry.addData("Offset: ", offset);
                 telemetry.update();
             }
-        }else if(correctedDegrees<0){
+        }else if(turnDegrees<0){
             dt.setDrivetrainPositions(predictedTicks,-predictedTicks,predictedTicks,-predictedTicks);
             dt.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
             dt.setDrivetrainVelocity(velocity);
@@ -204,34 +206,47 @@ public class RedLeft extends LinearOpMode {
 
     public void grab(int level){
         if (level == 5){
-            lift.targetDistance(4.75, 2000);
+            lift.targetDistance(6, 2000);
         }
         else if (level == 4){
-            lift.targetDistance(3.8, 2000);
+            lift.targetDistance(4.5, 2000);
         }
         else if (level == 3){
             lift.targetDistance(3, 2000);
         }
         while(lift.lift.isBusy()){}
         claw.setPosition(0.1);
-        lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
-        dt.driveDistance(2.5,500,opModeIsActive());
+        sleep(1000);
+        if (level == 5){
+            lift.targetDistance(12, 2000);
+        }
+        else if (level == 4){
+            lift.targetDistance(10.5, 2000);
+        }
+        else if (level == 3){
+            lift.targetDistance(9, 2000);
+        }
+        else{
+            lift.targetDistance(6,2000);
+        }
+        while(lift.lift.isBusy()){}
     }
 
     public void score(int level){
         if (level == 1){
-            lift.targetDistance(14,2000);
+            lift.targetDistance(16,2000);
         }
         else if (level == 2){
-            lift.targetDistance(22, 2000);
+            lift.targetDistance(24, 2000);
         }
         else{
-            lift.targetDistance(32, 2000);
+            lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-3.5,500,opModeIsActive());
+        dt.driveDistance(-2.75,500,opModeIsActive());
+        sleep(500);
         claw.setPosition(0.4);
-        dt.driveDistance(3.5,500,opModeIsActive());
-        lift.targetDistance(0,2000);
+        dt.driveDistance(2.75,500,opModeIsActive());
+        lift.lift.setTargetPosition(0);
     }
 }
