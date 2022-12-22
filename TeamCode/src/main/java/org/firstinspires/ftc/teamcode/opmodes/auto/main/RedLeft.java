@@ -77,6 +77,7 @@ public class RedLeft extends LinearOpMode {
     public Lift lift = new Lift();
     public Servo claw;
     public int park = 2;
+    public int tracker = 5;
 
     @Override
     public void runOpMode() {
@@ -103,7 +104,7 @@ public class RedLeft extends LinearOpMode {
         waitForStart();
 
         //Auto Commands
-        sleep(1000);
+        sleep(500);
         if(tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
@@ -119,18 +120,14 @@ public class RedLeft extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(24,500,opModeIsActive());
-        dt.driveDistance(-51,1000,opModeIsActive());
-        dt.strafeDistance(-12,500,opModeIsActive());
+        dt.strafeDistance(24,1000,opModeIsActive());
+        dt.driveDistance(-51,1500,opModeIsActive());
+        dt.strafeDistance(-12,1000,opModeIsActive());
         score(3);
-        turnDegrees(88,500);
-        dt.driveDistance(-2,500,opModeIsActive());
-        dt.strafeDistance(2,500,opModeIsActive());
-        dt.driveDistance(-28,1000,opModeIsActive());
-        grab(5);
-        dt.driveDistance(32, 1000, opModeIsActive());
-        turnDegrees(-88,500);
-        score(5);
+        for (int i = 1; i <=2; i++){
+            cycle();
+            tracker --;
+        }
         turnDegrees(180,750);
         dt.driveDistance(4,500,opModeIsActive());
         if (park == 1){
@@ -249,4 +246,16 @@ public class RedLeft extends LinearOpMode {
         dt.driveDistance(2.75,500,opModeIsActive());
         lift.lift.setTargetPosition(0);
     }
+
+    public void cycle(){
+        turnDegrees(88,500);
+        dt.driveDistance(-2,500,opModeIsActive());
+        dt.strafeDistance(2,500,opModeIsActive());
+        dt.driveDistance(-28,1000,opModeIsActive());
+        grab(tracker);
+        dt.driveDistance(32, 1000, opModeIsActive());
+        turnDegrees(-88,750);
+        score(3);
+    }
+
 }
