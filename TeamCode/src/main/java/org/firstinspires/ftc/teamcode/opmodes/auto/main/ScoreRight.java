@@ -50,7 +50,7 @@ import java.util.List;
 
 @Autonomous(group = "main")
 
-public class RedRight extends LinearOpMode {
+public class ScoreRight extends LinearOpMode {
 
 
     private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";

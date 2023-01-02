@@ -126,7 +126,7 @@ public class ParkLeft extends LinearOpMode {
         if (park == 1){
             dt.strafeDistance(-48, 1000,opModeIsActive());
         }
-        turnDegrees(180,500);
+        turnDegrees(178.5,500);
         while (opModeIsActive()){}
     }
 
