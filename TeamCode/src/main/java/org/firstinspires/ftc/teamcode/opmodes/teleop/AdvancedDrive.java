@@ -15,12 +15,13 @@ private boolean yButton2Toggle=false;
         boolean isSlow = false;
         boolean isFast = false;
         //Changes behavior when intaking
-        boolean isIntaking = false;
+        boolean hasClaw = false;
         int liftZero = 0;
         double gyroOffset = 0;
         boolean pressed=false;
         int tracker = 0;
         double[] positions = new double[]{-4.5, -3, -1.5};
+        boolean stackyWacky = false;
 
 private ElapsedTime timer=new ElapsedTime();
 
@@ -41,6 +42,8 @@ private ElapsedTime timer=new ElapsedTime();
         super.loop();
 
         isSlow = gamepad1.right_trigger>.01;
+        stackyWacky = gamepad2.left_trigger > .01;
+        hasClaw = gamepad2.right_trigger>.01;
 
         if(gamepad1.y){
             gyroOffset = dt.getGyroRotation(AngleUnit.RADIANS);
@@ -68,8 +71,26 @@ private ElapsedTime timer=new ElapsedTime();
         else if (gamepad2.b){
             lift.targetDistance(16,2000);
         }
+        else if (hasClaw){
+            lift.targetDistance(0, 1000);
+        }
         else{
-            lift.targetDistance(0, 2000);
+            lift.targetDistance(0,2000);
+        }
+
+        if (stackyWacky){
+            if (gamepad2.y){
+                lift.targetDistance(5,2000);
+            }
+            else if (gamepad2.x){
+                lift.targetDistance(3.5, 2000);
+            }
+            else if (gamepad2.b){
+                lift.targetDistance(2,2000);
+            }
+            else{
+                lift.targetDistance(0,2000);
+            }
         }
 
         if (gamepad2.right_trigger > 0.01){
@@ -77,25 +98,6 @@ private ElapsedTime timer=new ElapsedTime();
         }
         else{
             claw.setPosition(0.4);
-        }
-
-        if (gamepad2.dpad_down){
-            lift.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            lift.lift.setVelocity(-1000);
-        }
-
-        if(gamepad2.dpad_up){
-            lift.targetDistance(4.75,1000);
-        }
-        else if (gamepad2.dpad_left){
-            lift.targetDistance(4, 1000);
-        }
-        else if(gamepad2.dpad_right){
-            lift.targetDistance(3.25,1000);
-        }
-
-        if (gamepad2.a){
-            lift.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
         telemetry.addLine("Servo Position: " + claw.getPosition());

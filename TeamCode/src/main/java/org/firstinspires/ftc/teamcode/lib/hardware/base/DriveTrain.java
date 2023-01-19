@@ -136,15 +136,15 @@ public class DriveTrain{
       if(isSlow) {
         movement_x = Range.clip(-gamepad.left_stick_x, -.2, .2);
         movement_y = Range.clip(gamepad.left_stick_y, -.2, .2);
-        movement_turn = Range.clip(-gamepad.right_stick_x, -.2, .2);
+        movement_turn = Range.clip(-gamepad.right_stick_x, -.4, .4);
       } else if(isFast){
         movement_x = Range.clip(-gamepad.left_stick_x, -1, 1);
         movement_y = Range.clip(gamepad.left_stick_y, -1, 1);
         movement_turn = Range.clip(-gamepad.right_stick_x, -1, 1);
       } else{
-        movement_x = Range.clip(-gamepad.left_stick_x, -.4, .4);
-        movement_y = Range.clip(gamepad.left_stick_y, -.4, .4);
-        movement_turn = Range.clip(-gamepad.right_stick_x, -.4, .4);
+        movement_x = Range.clip(-gamepad.left_stick_x, -.5, .5);
+        movement_y = Range.clip(gamepad.left_stick_y, -.5, .5);
+        movement_turn = Range.clip(-gamepad.right_stick_x, -.6, .6);
       }
 
       double temp = movement_x*Math.cos(getGyroRotation(AngleUnit.RADIANS)-gyroOffset)+movement_y*Math.sin(getGyroRotation(AngleUnit.RADIANS)-gyroOffset);

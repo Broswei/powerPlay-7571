@@ -85,7 +85,7 @@ public class ParkLeft extends LinearOpMode {
 
         if (tfod != null) {
             tfod.activate();
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(1.0, 16.0/9.0);
         }
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
@@ -103,8 +103,18 @@ public class ParkLeft extends LinearOpMode {
 
         //Auto Commands
         sleep(1000);
+
+        // START PHOENIX
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
         if(tfod != null) {
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            ElapsedTime detectionTimer = new ElapsedTime();
+
+            // continually ping for recognitions until one is found, or until timer is reached
+            while(updatedRecognitions.size() < 1 && detectionTimer.seconds() < 3){
+                updatedRecognitions = tfod.getUpdatedRecognitions();
+            }
+
             if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
                 for (Recognition recognition : updatedRecognitions) {
                     telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
@@ -118,6 +128,26 @@ public class ParkLeft extends LinearOpMode {
                 telemetry.update();
             }
         }
+
+        // END PHOENIX
+
+        /*if(tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
+            if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
+                for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                    if (recognition.getLabel() == "1 Yellow") {
+                        park--;
+                    } else if (recognition.getLabel() == "3 Green") {
+                        park++;
+                    }
+                    telemetry.addData("Parking Space", park);
+                }
+                telemetry.update();
+            }
+        }*/
+
         dt.strafeDistance(24,1000,opModeIsActive());
         dt.driveDistance(-51,1000,opModeIsActive());
         if (park == 2){
