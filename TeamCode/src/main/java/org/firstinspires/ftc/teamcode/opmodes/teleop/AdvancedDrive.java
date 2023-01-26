@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.lib.hardware.base.Robot;
 
 @TeleOp (group = "DriveTest")
@@ -42,7 +44,7 @@ private ElapsedTime timer=new ElapsedTime();
         super.loop();
 
         isSlow = gamepad1.right_trigger>.01;
-        stackyWacky = gamepad2.left_trigger > .01;
+        stackyWacky = gamepad2.left_trigger>0.1;
         hasClaw = gamepad2.right_trigger>.01;
 
         if(gamepad1.y){
@@ -102,6 +104,7 @@ private ElapsedTime timer=new ElapsedTime();
 
         telemetry.addLine("Servo Position: " + claw.getPosition());
         telemetry.addLine("Slides Position: "+  lift.lift.getCurrentPosition());
+        telemetry.addLine("Vertical Orientation: " + gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES));
         telemetry.update();
     }
 }
