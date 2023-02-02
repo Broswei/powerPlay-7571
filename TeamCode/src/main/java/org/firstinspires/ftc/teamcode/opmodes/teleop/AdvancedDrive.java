@@ -44,7 +44,6 @@ private ElapsedTime timer=new ElapsedTime();
         super.loop();
 
         isSlow = gamepad1.right_trigger>.01;
-        stackyWacky = gamepad2.left_trigger>0.1;
         hasClaw = gamepad2.right_trigger>.01;
 
         if(gamepad1.y){
@@ -73,26 +72,17 @@ private ElapsedTime timer=new ElapsedTime();
         else if (gamepad2.b){
             lift.targetDistance(16,2000);
         }
+        else if (gamepad2.left_trigger>.01){
+            lift.targetDistance(5,2000);
+        }
+        else if (gamepad2.left_bumper){
+            lift.targetDistance(3.5, 2000);
+        }
         else if (hasClaw){
             lift.targetDistance(0, 1000);
         }
         else{
             lift.targetDistance(0,2000);
-        }
-
-        if (stackyWacky){
-            if (gamepad2.y){
-                lift.targetDistance(5,2000);
-            }
-            else if (gamepad2.x){
-                lift.targetDistance(3.5, 2000);
-            }
-            else if (gamepad2.b){
-                lift.targetDistance(2,2000);
-            }
-            else{
-                lift.targetDistance(0,2000);
-            }
         }
 
         if (gamepad2.right_trigger > 0.01){

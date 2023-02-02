@@ -118,7 +118,7 @@ public class ParkRight extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(-21,1000,opModeIsActive());
+        dt.strafeDistance(-18,1000,opModeIsActive());
         dt.driveDistance(-51,1000,opModeIsActive());
         if (park == 2){
             dt.strafeDistance(24, 1000, opModeIsActive());

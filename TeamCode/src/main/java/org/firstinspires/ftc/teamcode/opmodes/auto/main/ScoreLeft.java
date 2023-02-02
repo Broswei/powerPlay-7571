@@ -119,24 +119,30 @@ public class ScoreLeft extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(-24,500,opModeIsActive());
-        dt.driveDistance(-51,1000,opModeIsActive());
-        dt.strafeDistance(12,500,opModeIsActive());
+        dt.strafeDistance(27,1000,opModeIsActive());
+        dt.driveDistance(-50,1500,opModeIsActive());
+        sleep(500);
+        dt.strafeDistance(-12,1000,opModeIsActive());
         score(3);
-        turnDegrees(-88,500);
+        turnDegrees(88.5,500);
         dt.driveDistance(-2,500,opModeIsActive());
-        dt.strafeDistance(-2,500,opModeIsActive());
-        dt.driveDistance(-28,1000,opModeIsActive());
+        dt.strafeDistance(2, 500, opModeIsActive());
+        dt.driveDistance(-30,1000,opModeIsActive());
         grab(5);
-        dt.driveDistance(32, 1000, opModeIsActive());
-        turnDegrees(-88,500);
-        score(5);
-        turnDegrees(180,750);
-        dt.driveDistance(4,500,opModeIsActive());
-        if (park == 1){
-            dt.strafeDistance(-36, 1000,opModeIsActive());
+        dt.driveDistance(30,1000,opModeIsActive());
+        turnDegrees(-88.5,500);
+        lift.targetDistance(34,1000);
+        dt.driveDistance(-2,500,opModeIsActive());
+        claw.setPosition(0.4);
+        dt.driveDistance(0.5,500,opModeIsActive());
+        turnDegrees(178.5,500);
+        if(park==3){
+            dt.strafeDistance(-12,1000,opModeIsActive());
         }
-        else if(park == 3){
+        else if (park == 2){
+            dt.strafeDistance(12,1000,opModeIsActive());
+        }
+        else{
             dt.strafeDistance(36,1000,opModeIsActive());
         }
         while (opModeIsActive()){}
@@ -206,29 +212,28 @@ public class ScoreLeft extends LinearOpMode {
 
     public void grab(int level){
         if (level == 5){
-            lift.targetDistance(4.75, 2000);
+            lift.targetDistance(5, 2000);
         }
         else if (level == 4){
-            lift.targetDistance(3.8, 2000);
-        }
-        else if (level == 3){
-            lift.targetDistance(3, 2000);
+            lift.targetDistance(3.5, 2000);
         }
         while(lift.lift.isBusy()){}
         claw.setPosition(0.1);
-        lift.targetDistance(lift.lift.getCurrentPosition() + 6, 2000);
+        sleep(500);
+        lift.targetDistance(16, 2000);
+        sleep(1000);
         dt.driveDistance(2.5,500,opModeIsActive());
     }
 
     public void score(int level){
         if (level == 1){
-            lift.targetDistance(14,2000);
+            lift.targetDistance(16,2000);
         }
         else if (level == 2){
-            lift.targetDistance(22, 2000);
+            lift.targetDistance(24, 2000);
         }
         else{
-            lift.targetDistance(32, 2000);
+            lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
         dt.driveDistance(-3.5,500,opModeIsActive());
