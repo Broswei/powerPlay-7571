@@ -99,7 +99,7 @@ public class ScoreLeft extends LinearOpMode {
 
         dt.initMotors(motors);
         dt.initGyro(gyro);
-        claw.setPosition(0.1);
+        claw.setPosition(0);
         waitForStart();
 
         //Auto Commands
@@ -120,23 +120,11 @@ public class ScoreLeft extends LinearOpMode {
             }
         }
         dt.strafeDistance(27,1000,opModeIsActive());
-        dt.driveDistance(-50,1500,opModeIsActive());
-        sleep(500);
-        dt.strafeDistance(-12,1000,opModeIsActive());
-        score(3);
-        turnDegrees(88.5,500);
-        dt.driveDistance(-2,500,opModeIsActive());
-        dt.strafeDistance(2, 500, opModeIsActive());
-        dt.driveDistance(-30,1000,opModeIsActive());
-        grab(5);
-        dt.driveDistance(30,1000,opModeIsActive());
-        turnDegrees(-88.5,500);
-        lift.targetDistance(34,1000);
-        dt.driveDistance(-2,500,opModeIsActive());
+        dt.driveDistance(-64,1500,opModeIsActive());
+        turnDegrees(86,750);
+        cycle();
         claw.setPosition(0.4);
-        dt.driveDistance(0.5,500,opModeIsActive());
-        turnDegrees(178.5,500);
-        if(park==3){
+        /*if(park==3){
             dt.strafeDistance(-12,1000,opModeIsActive());
         }
         else if (park == 2){
@@ -145,6 +133,7 @@ public class ScoreLeft extends LinearOpMode {
         else{
             dt.strafeDistance(36,1000,opModeIsActive());
         }
+        */
         while (opModeIsActive()){}
     }
 
@@ -236,9 +225,23 @@ public class ScoreLeft extends LinearOpMode {
             lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-3.5,500,opModeIsActive());
+        dt.driveDistance(-1.5,500,opModeIsActive());
         claw.setPosition(0.4);
-        dt.driveDistance(3.5,500,opModeIsActive());
-        lift.targetDistance(0,2000);
+        sleep(750);
+    }
+
+    public void cycle(){
+        score(3);
+        dt.strafeDistance(-12,750,opModeIsActive());
+        lift.targetDistance(6,2000);
+        turnDegrees(-5,500);
+        dt.driveDistance(-48,1000,opModeIsActive());
+        sleep(500);
+        claw.setPosition(0);
+        sleep(500);
+        lift.targetDistance(34, 2000);
+        dt.driveDistance(49, 800,opModeIsActive());
+        sleep(500);
+        dt.strafeDistance(10.5,750, opModeIsActive());
     }
 }

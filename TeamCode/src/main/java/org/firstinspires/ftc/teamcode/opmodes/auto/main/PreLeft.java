@@ -153,7 +153,7 @@ public class  PreLeft extends LinearOpMode {
         turnDegrees(178,500);
         dt.driveDistance(0.5,500,opModeIsActive());
         if (park == 1){
-            dt.strafeDistance(36, 1000,opModeIsActive());
+            dt.strafeDistance(42, 1000,opModeIsActive());
         }
         else if(park == 2){
             dt.strafeDistance(12,1000,opModeIsActive());
