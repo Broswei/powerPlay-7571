@@ -100,7 +100,7 @@ public class PreRight extends LinearOpMode {
 
         dt.initMotors(motors);
         dt.initGyro(gyro);
-        claw.setPosition(0.1);
+        claw.setPosition(0);
         waitForStart();
 
         //Auto Commands

@@ -22,6 +22,7 @@ import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aKd;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aKi;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aKp;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.aTarget;
+import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.currentXTicks;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.movement_turn;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.movement_x;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.movement_y;
@@ -36,6 +37,8 @@ import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.yKd;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.yKi;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.yKp;
 import static org.firstinspires.ftc.teamcode.lib.util.GlobalVars.yTarget;
+
+import dalvik.system.DelegateLastClassLoader;
 
 /**
  * represents the robot's drivebase
@@ -54,6 +57,8 @@ public class DriveTrain{
 
   double ticksPerRotation = 384.5;
 
+  public static Telemetry telemetry;
+
   //last update time
   private long lastUpdateTime = 0;
 
@@ -65,6 +70,7 @@ public class DriveTrain{
   public static PIDController PIDa = new PIDController(aKp, aKi, aKd);
 
   public double ticks;
+  public int currVelocity;
 
   public DriveTrain(){
 
@@ -193,6 +199,24 @@ public class DriveTrain{
     runtime.reset();
     while(fr.isBusy() && isRunning){
 
+    }
+  }
+
+  public void goBrrrr(double distanceIn, int velocity, double seconds, boolean isRunning){
+    ticks = (-distanceIn/(Math.PI*4)*ticksPerRotation);
+    setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    setDrivetrainPositions((int)ticks);
+    setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
+    currVelocity = 100;
+    setDrivetrainVelocity(velocity);
+    ElapsedTime runtime = new ElapsedTime();
+    while(fr.getVelocity() < velocity){
+      runtime.reset();
+      while(runtime.seconds() <= seconds/20){
+
+      }
+      velocity += (velocity - 100)/(seconds/4); //1800
+      setDrivetrainVelocity(velocity);
     }
   }
 

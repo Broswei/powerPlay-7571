@@ -122,8 +122,10 @@ public class ScoreLeft extends LinearOpMode {
         dt.strafeDistance(27,1000,opModeIsActive());
         dt.driveDistance(-64,1500,opModeIsActive());
         turnDegrees(86,750);
+        score(3);
         cycle();
-        claw.setPosition(0.4);
+        cycle();
+
         /*if(park==3){
             dt.strafeDistance(-12,1000,opModeIsActive());
         }
@@ -231,17 +233,17 @@ public class ScoreLeft extends LinearOpMode {
     }
 
     public void cycle(){
-        score(3);
         dt.strafeDistance(-12,750,opModeIsActive());
         lift.targetDistance(6,2000);
-        turnDegrees(-5,500);
+        turnDegrees(-2.5,500);
         dt.driveDistance(-48,1000,opModeIsActive());
         sleep(500);
         claw.setPosition(0);
         sleep(500);
         lift.targetDistance(34, 2000);
-        dt.driveDistance(49, 800,opModeIsActive());
+        dt.driveDistance(50, 750,opModeIsActive());
         sleep(500);
-        dt.strafeDistance(10.5,750, opModeIsActive());
+        dt.strafeDistance(8,750, opModeIsActive());
+        claw.setPosition(0.4);
     }
 }

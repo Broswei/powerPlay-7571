@@ -100,7 +100,7 @@ public class  PreLeft extends LinearOpMode {
 
         dt.initMotors(motors);
         dt.initGyro(gyro);
-        claw.setPosition(0.1);
+        claw.setPosition(0);
         waitForStart();
 
         //Auto Commands
@@ -148,7 +148,7 @@ public class  PreLeft extends LinearOpMode {
         dt.strafeDistance(27,1000,opModeIsActive());
         dt.driveDistance(-50,1500,opModeIsActive());
         sleep(500);
-        dt.strafeDistance(-12,1000,opModeIsActive());
+        dt.strafeDistance(-11,1000,opModeIsActive());
         score(3);
         turnDegrees(178,500);
         dt.driveDistance(0.5,500,opModeIsActive());
@@ -265,10 +265,11 @@ public class  PreLeft extends LinearOpMode {
             lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-4,500,opModeIsActive());
-        sleep(500);
+        dt.driveDistance(-4.5,500,opModeIsActive());
+        sleep(1000);
         claw.setPosition(0.4);
-        dt.driveDistance(1,500,opModeIsActive());
+        sleep(500);
+        dt.driveDistance(1.5,500,opModeIsActive());
         lift.lift.setTargetPosition(0);
     }
 
