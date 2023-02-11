@@ -269,7 +269,7 @@ public class PreRight extends LinearOpMode {
         sleep(500);
         claw.setPosition(0.4);
         dt.driveDistance(1,500,opModeIsActive());
-        lift.lift.setTargetPosition(0);
+        lift.lift.setTargetPosition(-88);
     }
 
     public void cycle(){

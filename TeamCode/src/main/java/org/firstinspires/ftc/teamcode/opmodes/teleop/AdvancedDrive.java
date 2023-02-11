@@ -79,14 +79,11 @@ private ElapsedTime timer=new ElapsedTime();
             lift.targetDistance(3.5, 2000);
         }
         else if (hasClaw){
-            lift.targetDistance(0, 1000);
+            lift.targetDistance(1, 1000);
 
         }
         else{
-            lift.targetDistance(0,2000);
-            if (Math.abs(lift.lift.getCurrentPosition()) <10){
-                lift.setPower(0);
-            }
+            lift.targetDistance(1,2000);
         }
 
         if (gamepad2.right_trigger > 0.01){

@@ -270,7 +270,7 @@ public class  PreLeft extends LinearOpMode {
         claw.setPosition(0.4);
         sleep(500);
         dt.driveDistance(1.5,500,opModeIsActive());
-        lift.lift.setTargetPosition(0);
+        lift.lift.setTargetPosition(-88);
     }
 
     public void cycle(){
