@@ -145,22 +145,22 @@ public class  PreLeft extends LinearOpMode {
         }
         *?
          */
-        dt.strafeDistance(27,1000,opModeIsActive());
-        dt.driveDistance(-50,1500,opModeIsActive());
+        dt.strafeDistance(27,500,opModeIsActive());
+        dt.driveDistance(-50,1000,opModeIsActive());
         sleep(500);
-        dt.strafeDistance(-11,1000,opModeIsActive());
+        dt.strafeDistance(-12,500,opModeIsActive());
         score(3);
-        turnDegrees(178,500);
         dt.driveDistance(0.5,500,opModeIsActive());
         if (park == 1){
-            dt.strafeDistance(42, 1000,opModeIsActive());
+            dt.strafeDistance(-36, 750,opModeIsActive());
         }
         else if(park == 2){
-            dt.strafeDistance(12,1000,opModeIsActive());
+            dt.strafeDistance(-12,750,opModeIsActive());
         }
         else if(park == 3){
-            dt.strafeDistance(-16, 1000, opModeIsActive());
+            dt.strafeDistance(13, 1000, opModeIsActive());
         }
+        turnDegrees(178.5,500);
         while (opModeIsActive()){}
     }
 
@@ -270,7 +270,7 @@ public class  PreLeft extends LinearOpMode {
         claw.setPosition(0.4);
         sleep(500);
         dt.driveDistance(1.5,500,opModeIsActive());
-        lift.lift.setTargetPosition(-88);
+        lift.lift.setTargetPosition(0);
     }
 
     public void cycle(){

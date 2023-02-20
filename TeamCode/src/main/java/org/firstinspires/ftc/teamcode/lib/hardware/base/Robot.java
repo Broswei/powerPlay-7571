@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.hardware.manip.Lift;
@@ -34,6 +35,7 @@ public class Robot extends OpMode {
   public Lift lift = new Lift();
   public BNO055IMU gyro;
   public Servo claw;
+  public TouchSensor magLim;
   public HardwareDevice Webcam1;
 
 
@@ -55,6 +57,7 @@ public class Robot extends OpMode {
     lift.init(hardwareMap.get(DcMotorEx.class, "lift"));
     claw = hardwareMap.get(Servo.class, "claw");
     Webcam1 = hardwareMap.get(HardwareDevice.class, "Webcam1");
+    magLim = hardwareMap.get(TouchSensor.class, "magLim");
 
   }
 

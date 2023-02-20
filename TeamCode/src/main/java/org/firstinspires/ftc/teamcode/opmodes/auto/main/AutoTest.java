@@ -29,12 +29,15 @@
 
 package org.firstinspires.ftc.teamcode.opmodes.auto.main;
 
+import android.text.method.Touch;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -56,12 +59,14 @@ public class AutoTest extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotorEx[] motors;
     private BNO055IMU gyro;
+    private TouchSensor magLim;
 
     @Override
     public void runOpMode() {
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
         gyro = hardwareMap.get(BNO055IMU.class, "imu");
+        magLim = hardwareMap.get(TouchSensor.class, "magLim");
 
         dt.telemetry = telemetry;
 
@@ -73,7 +78,42 @@ public class AutoTest extends LinearOpMode {
         //Auto Commands
 
         while (opModeIsActive()){
+            turnDegrees(178.5,750);
+            sleep(1000);
+        }
+    }
+
+    public void turnDegrees(double turnDegrees,int velocity){
+        dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        double offset;
+        offset = dt.getGyroRotation(AngleUnit.DEGREES);
+        int predictedTicks = (int)(turnDegrees*9.34579439252+2000);
+
+        if(turnDegrees>0){
+            dt.setDrivetrainPositions(-predictedTicks,predictedTicks,-predictedTicks,predictedTicks);
+            dt.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
+            dt.setDrivetrainVelocity(velocity);
+            while(turnDegrees>dt.getGyroRotation(AngleUnit.DEGREES)&&opModeIsActive()){
+                telemetry.addLine("Running left");
+                telemetry.addData("gyro Target: ", turnDegrees);
+                telemetry.addData("gyro: ", dt.getGyroRotation(AngleUnit.DEGREES));
+                telemetry.addData("Offset: ", offset);
+                telemetry.update();
+            }
+        }else if(turnDegrees<0){
+            dt.setDrivetrainPositions(predictedTicks,-predictedTicks,predictedTicks,-predictedTicks);
+            dt.setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
+            dt.setDrivetrainVelocity(velocity);
+            while(turnDegrees<dt.getGyroRotation(AngleUnit.DEGREES)&&opModeIsActive()){
+                telemetry.addLine("Running right");
+                telemetry.addData("gyro: ", dt.getGyroRotation(AngleUnit.DEGREES));
+                telemetry.addData("gyro Target: ", turnDegrees);
+                telemetry.addData("Offset: ", offset);
+                telemetry.update();
+            }
 
         }
+        dt.setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 }

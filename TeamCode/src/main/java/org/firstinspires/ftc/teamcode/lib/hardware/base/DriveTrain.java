@@ -71,6 +71,7 @@ public class DriveTrain{
 
   public double ticks;
   public int currVelocity;
+  public int targetVelocity;
 
   public DriveTrain(){
 
@@ -202,21 +203,29 @@ public class DriveTrain{
     }
   }
 
-  public void goBrrrr(double distanceIn, int velocity, double seconds, boolean isRunning){
+  public void goBrrrr(double distanceIn, int velocity, boolean isRunning){
     ticks = (-distanceIn/(Math.PI*4)*ticksPerRotation);
     setDrivetrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     setDrivetrainPositions((int)ticks);
     setDrivetrainMode(DcMotor.RunMode.RUN_TO_POSITION);
-    currVelocity = 100;
-    setDrivetrainVelocity(velocity);
+    currVelocity = 0;
+    setDrivetrainVelocity(currVelocity);
     ElapsedTime runtime = new ElapsedTime();
     while(fr.getVelocity() < velocity){
       runtime.reset();
-      while(runtime.seconds() <= seconds/20){
+      while(runtime.seconds() <= 0.2){
 
       }
-      velocity += (velocity - 100)/(seconds/4); //1800
-      setDrivetrainVelocity(velocity);
+      currVelocity += (velocity)/5;
+      setDrivetrainVelocity(currVelocity);
+    }
+    while(fr.getVelocity() > 0){
+      runtime.reset();
+      while(runtime.seconds() <= 0.4){
+
+      }
+      currVelocity -= (targetVelocity)/5;
+      setDrivetrainVelocity(currVelocity);
     }
   }
 

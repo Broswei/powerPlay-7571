@@ -24,6 +24,7 @@ private boolean yButton2Toggle=false;
         int tracker = 0;
         double[] positions = new double[]{-4.5, -3, -1.5};
         boolean stackyWacky = false;
+        boolean lastMaggy = false;
 
 private ElapsedTime timer=new ElapsedTime();
 
@@ -79,11 +80,11 @@ private ElapsedTime timer=new ElapsedTime();
             lift.targetDistance(3.5, 2000);
         }
         else if (hasClaw){
-            lift.targetDistance(1, 1000);
+            lift.targetDistance(0, 1000);
 
         }
         else{
-            lift.targetDistance(1,2000);
+            lift.targetDistance(0,2000);
         }
 
         if (gamepad2.right_trigger > 0.01){
@@ -91,6 +92,16 @@ private ElapsedTime timer=new ElapsedTime();
         }
         else{
             claw.setPosition(0.4);
+        }
+
+        if (magLim.isPressed()){
+            if (!lastMaggy){
+                lift.lift.setVelocity(0);
+                lift.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            lastMaggy = true;
+        } else {
+            lastMaggy = false;
         }
 
         telemetry.addLine("Servo Position: " + claw.getPosition());
