@@ -151,21 +151,21 @@ public class OneLeft extends LinearOpMode {
         dt.strafeDistance(-12,500,opModeIsActive());
         score(3);
         dt.driveDistance(0.5,500,opModeIsActive());
-        turnDegrees(88,500);
+        turnDegrees(85,500);
         dt.driveDistance(-36,1000,opModeIsActive());
         grab(5);
         dt.driveDistance(36, 1000, opModeIsActive());
-        turnDegrees(-87.5,500);
+        turnDegrees(-78,500);
         lift.targetDistance(34, 2000);
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-3,500,opModeIsActive());
+        dt.driveDistance(-0.5,500,opModeIsActive());
         sleep(1000);
         claw.setPosition(0.4);
         sleep(1000);
         dt.driveDistance(1.5,500,opModeIsActive());
         lift.lift.setTargetPosition(0);
         if (park == 1){
-            dt.strafeDistance(-36, 750,opModeIsActive());
+            dt.strafeDistance(-40, 750,opModeIsActive());
         }
         else if(park == 2){
             dt.strafeDistance(-12,750,opModeIsActive());
