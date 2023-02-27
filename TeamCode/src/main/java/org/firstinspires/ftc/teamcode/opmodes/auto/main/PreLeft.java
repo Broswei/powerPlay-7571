@@ -265,11 +265,11 @@ public class  PreLeft extends LinearOpMode {
             lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-4.5,500,opModeIsActive());
+        dt.driveDistance(-5.5,500,opModeIsActive());
         sleep(1000);
         claw.setPosition(0.4);
         sleep(500);
-        dt.driveDistance(1.5,500,opModeIsActive());
+        dt.driveDistance(2.5,500,opModeIsActive());
         lift.lift.setTargetPosition(0);
     }
 

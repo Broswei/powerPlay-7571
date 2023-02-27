@@ -78,8 +78,7 @@ public class AutoTest extends LinearOpMode {
         //Auto Commands
 
         while (opModeIsActive()){
-            turnDegrees(178.5,750);
-            sleep(1000);
+            dt.goBrrrr(96, 1500, opModeIsActive());
         }
     }
 

@@ -71,7 +71,6 @@ public class DriveTrain{
 
   public double ticks;
   public int currVelocity;
-  public int targetVelocity;
 
   public DriveTrain(){
 
@@ -224,7 +223,7 @@ public class DriveTrain{
       while(runtime.seconds() <= 0.4){
 
       }
-      currVelocity -= (targetVelocity)/5;
+      currVelocity -= (velocity)/5;
       setDrivetrainVelocity(currVelocity);
     }
   }
