@@ -50,7 +50,7 @@ import java.util.List;
 
 @Autonomous(group = "main")
 
-public class SmallLeft extends LinearOpMode {
+public class SmallRight extends LinearOpMode {
 
 
     private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";
@@ -119,11 +119,11 @@ public class SmallLeft extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(29.5,500,opModeIsActive());
+        dt.strafeDistance(-21,500,opModeIsActive());
         dt.driveDistance(-64,1000,opModeIsActive());
-        turnDegrees(85,500);
+        turnDegrees(-85,500);
         score(3);
-        dt.strafeDistance(-12,500,opModeIsActive());
+        dt.strafeDistance(12,500,opModeIsActive());
         cycle(5);
         cycle(4);
         lift.lift.setTargetPosition(0);
@@ -255,10 +255,10 @@ public class SmallLeft extends LinearOpMode {
         lift.targetDistance(15, 2000);
         dt.driveDistance(21,1000,opModeIsActive());
         sleep(100);
-        dt.strafeDistance(-13.5, 500,opModeIsActive());
+        dt.strafeDistance(13.5, 500,opModeIsActive());
         sleep(500);
         claw.setPosition(0.4);
         sleep(500);
-        dt.strafeDistance(13,500,opModeIsActive());
+        dt.strafeDistance(-13,500,opModeIsActive());
     }
 }

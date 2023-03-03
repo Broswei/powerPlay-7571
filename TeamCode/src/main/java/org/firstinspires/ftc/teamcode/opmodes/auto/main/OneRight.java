@@ -50,7 +50,7 @@ import java.util.List;
 
 @Autonomous(group = "main")
 
-public class TwoLeft extends LinearOpMode {
+public class OneRight extends LinearOpMode {
 
 
     private static final String TFOD_MODEL_ASSET = "betterpp7571sleeve.tflite";
@@ -77,6 +77,7 @@ public class TwoLeft extends LinearOpMode {
     public Lift lift = new Lift();
     public Servo claw;
     public int park = 2;
+    public int tracker = 5;
 
     @Override
     public void runOpMode() {
@@ -86,7 +87,7 @@ public class TwoLeft extends LinearOpMode {
 
         if (tfod != null) {
             tfod.activate();
-            tfod.setZoom(1.2, 16.0/9.0);
+            tfod.setZoom(1.15, 16.0/9.0);
         }
 
         motors = new DcMotorEx[]{hardwareMap.get(DcMotorEx.class, "fl"), hardwareMap.get(DcMotorEx.class, "fr"), hardwareMap.get(DcMotorEx.class, "bl"), hardwareMap.get(DcMotorEx.class, "br")};
@@ -103,8 +104,31 @@ public class TwoLeft extends LinearOpMode {
         waitForStart();
 
         //Auto Commands
-        sleep(1000);
+        sleep(500);
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
         if(tfod != null) {
+            ElapsedTime detectionTimer = new ElapsedTime();
+
+            // continually ping for recognitions until one is found, or until timer is reached
+            while(updatedRecognitions.size() < 1 && detectionTimer.seconds() < 3){
+                updatedRecognitions = tfod.getUpdatedRecognitions();
+            }
+
+            if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
+                for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                    if (recognition.getLabel() == "1 Yellow") {
+                        park--;
+                    } else if (recognition.getLabel() == "3 Green") {
+                        park++;
+                    }
+                    telemetry.addData("Parking Space", park);
+                }
+                telemetry.update();
+            }
+        }
+        /*if(tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null && updatedRecognitions.size() == 1) {
                 for (Recognition recognition : updatedRecognitions) {
@@ -119,35 +143,37 @@ public class TwoLeft extends LinearOpMode {
                 telemetry.update();
             }
         }
-        dt.strafeDistance(28,1000,opModeIsActive());
-        dt.driveDistance(-62,1500,opModeIsActive());
-        turnDegrees(85,500);
+        *?
+         */
+        dt.strafeDistance(27,500,opModeIsActive());
+        dt.driveDistance(-50,1000,opModeIsActive());
+        sleep(500);
+        dt.strafeDistance(-12,500,opModeIsActive());
         score(3);
-        cycle();
-        dt.strafeDistance(-13,500,opModeIsActive());
-        lift.targetDistance(4.25,2000);
-        dt.driveDistance(-50,800,opModeIsActive());
-        sleep(500);
-        claw.setPosition(0);
-        sleep(250);
+        dt.driveDistance(0.5,500,opModeIsActive());
+        turnDegrees(85,500);
+        dt.driveDistance(-36,1000,opModeIsActive());
+        grab(5);
+        dt.driveDistance(36, 1000, opModeIsActive());
+        turnDegrees(-78,500);
         lift.targetDistance(34, 2000);
-        dt.driveDistance(48, 750,opModeIsActive());
-        sleep(100);
-        dt.strafeDistance(12,750, opModeIsActive());
-        sleep(500);
+        while(lift.lift.isBusy()){}
+        dt.driveDistance(-2.5,500,opModeIsActive());
+        sleep(1000);
         claw.setPosition(0.4);
-        sleep(500);
-        dt.strafeDistance(-13,500,opModeIsActive());
+        sleep(1000);
+        dt.driveDistance(3.5,500,opModeIsActive());
         lift.lift.setTargetPosition(0);
-        if(park==3){
-            dt.driveDistance(0,1000,opModeIsActive());
+        if (park == 1){
+            dt.strafeDistance(-40, 750,opModeIsActive());
         }
-        else if (park == 2){
-            dt.driveDistance(-30,2500,opModeIsActive());
+        else if(park == 2){
+            dt.strafeDistance(-12,750,opModeIsActive());
         }
-        else{
-            dt.driveDistance(-48,2500,opModeIsActive());
+        else if(park == 3){
+            dt.strafeDistance(13, 1000, opModeIsActive());
         }
+        turnDegrees(178.5,500);
         while (opModeIsActive()){}
     }
 
@@ -163,7 +189,7 @@ public class TwoLeft extends LinearOpMode {
 
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.7f;
         tfodParameters.isModelTensorFlow2 = true;
@@ -218,14 +244,27 @@ public class TwoLeft extends LinearOpMode {
             lift.targetDistance(5, 2000);
         }
         else if (level == 4){
-            lift.targetDistance(3.5, 2000);
+            lift.targetDistance(4.5, 2000);
+        }
+        else if (level == 3){
+            lift.targetDistance(3, 2000);
         }
         while(lift.lift.isBusy()){}
         claw.setPosition(0.1);
-        sleep(500);
-        lift.targetDistance(16, 2000);
         sleep(1000);
-        dt.driveDistance(2.5,500,opModeIsActive());
+        if (level == 5){
+            lift.targetDistance(12, 2000);
+        }
+        else if (level == 4){
+            lift.targetDistance(10.5, 2000);
+        }
+        else if (level == 3){
+            lift.targetDistance(9, 2000);
+        }
+        else{
+            lift.targetDistance(6,2000);
+        }
+        while(lift.lift.isBusy()){}
     }
 
     public void score(int level){
@@ -239,25 +278,21 @@ public class TwoLeft extends LinearOpMode {
             lift.targetDistance(34, 2000);
         }
         while(lift.lift.isBusy()){}
-        dt.driveDistance(-2.5,500,opModeIsActive());
-        sleep(500);
+        dt.driveDistance(-5.5,500,opModeIsActive());
+        sleep(1000);
         claw.setPosition(0.4);
-        sleep(750);
+        sleep(500);
+        dt.driveDistance(2.5,500,opModeIsActive());
+        lift.lift.setTargetPosition(0);
     }
 
     public void cycle(){
-        dt.strafeDistance(-13,500,opModeIsActive());
-        lift.targetDistance(4.25,2000);
-        dt.driveDistance(-47,800,opModeIsActive());
-        sleep(500);
-        claw.setPosition(0);
-        sleep(250);
-        lift.targetDistance(34, 2000);
-        dt.driveDistance(47, 750,opModeIsActive());
-        sleep(100);
-        dt.strafeDistance(12,750, opModeIsActive());
-        sleep(500);
-        claw.setPosition(0.4);
-        sleep(500);
+        grab(tracker);
+        dt.driveDistance(10, 1000, opModeIsActive());
+        turnDegrees(88,750);
+        score(1);
+        turnDegrees(-88,500);
+        dt.driveDistance(-10,1000,opModeIsActive());
     }
+
 }
